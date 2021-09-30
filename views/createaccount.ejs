@@ -1,0 +1,185 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="Mark Otto, Jacob Thornton, and Bootstrap contributors">
+    <meta name="generator" content="Hugo 0.84.0">
+    <title>Signin Template · Bootstrap v5.0</title>
+
+    <link rel="canonical" href="https://getbootstrap.com/docs/5.0/examples/sign-in/">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+
+
+    <!-- Bootstrap core CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css">
+    <!-- Favicons -->
+    <link rel="apple-touch-icon" href="/docs/5.0/assets/img/favicons/apple-touch-icon.png" sizes="180x180">
+    <link rel="icon" href="/docs/5.0/assets/img/favicons/favicon-32x32.png" sizes="32x32" type="image/png">
+    <link rel="icon" href="/docs/5.0/assets/img/favicons/favicon-16x16.png" sizes="16x16" type="image/png">
+    <link rel="manifest" href="/docs/5.0/assets/img/favicons/manifest.json">
+    <link rel="mask-icon" href="/docs/5.0/assets/img/favicons/safari-pinned-tab.svg" color="#7952b3">
+    <link rel="icon" href="/docs/5.0/assets/img/favicons/favicon.ico">
+    <meta name="theme-color" content="#7952b3">
+
+    <!-- Custom styles for this template -->
+    <link rel="stylesheet" href="css/loginstyle.css">
+</head>
+
+<body class="text-center">
+
+    <main class="form-signin">
+        <form action="/createaccount" method="POST">
+            <h1 style="color: red; font-weight: bold;">Simon Game</h1>
+
+            <div id="usermsg">
+                <span class="invalid">user id is mandatory</span>
+            </div>
+            <div id="feedback">
+                <span>
+                    <%=msg%>
+                </span>
+            </div>
+            <div class="form-floating">
+                <input type="text" class="form-control" id="userid" placeholder="name@example.com" name="user_id">
+                <label for="floatingInput">User name</label>
+            </div>
+
+            <div class="form-floating password">
+                <input type="password" class="form-control password1" placeholder="Password" name="password1">
+                <label for="floatingPassword">Password</label>
+            </div>
+            <div id="msg">
+                <span id="letter" class="invalid">a letter -</span>
+                <span id="number" class="invalid">- a number - </span>
+                <span id="space" class="valid">- no spaces</span>
+            </div>
+            <div class="form-floating">
+                <input type="password" class="form-control password2" placeholder="Password" name="password2" disabled>
+                <label for="floatingPassword">Retype-Password</label>
+            </div>
+            <div id="msg2">
+                <span id="match" class="invalid">not matching</span>
+            </div>
+
+            <button class="w-100 btn btn-lg btn-primary signInBtn " type="submit" disabled>Create Accoount and
+                login</button>
+
+
+            <p class="mt-5 mb-3 text-muted">&copy; 2020–2021</p>
+
+        </form>
+    </main>
+    <script>
+        var letter = false;
+        var space = false;
+        var number = false;
+        var match = false;
+        // for user id==============================================
+        var userid = document.getElementById('userid');
+        userid.onfocus = function () {
+            if (userid.value == "") {
+                document.getElementById('usermsg').style.display = 'block';
+                document.getElementById('feedback').style.display='none';
+            }
+            userid.onkeyup = function () {
+                if (userid.value == "") {
+                    document.getElementById('usermsg').style.display = 'block';
+                } else {
+                    document.getElementById('usermsg').style.display = 'none';
+                }
+                if (userid.value != "" & match & letter & space & number) {
+                    document.querySelector(".signInBtn").disabled = false;
+                }
+                if ((userid.value != "") & match & letter & space & number) {
+                document.querySelector('.signInBtn').disabled = false;
+            }
+            }
+        }
+
+
+        // for password1==============================================
+        var password1 = document.querySelector(".password1");
+        password1.onfocus = function () {
+            document.getElementById("msg").style.display = "block";
+        }
+        password1.onblur = function () {
+            document.getElementById("msg").style.display = "none";
+        }
+        password1.onkeyup = function () {
+            var regex = /[a-z A-Z]/g;
+            if (regex.test(password1.value)) {
+                document.getElementById('letter').classList.remove('invalid');
+                document.getElementById('letter').classList.add('valid');
+            } else {
+                document.getElementById('letter').classList.remove('valid');
+                document.getElementById('letter').classList.add('invalid');
+            }
+            var num = /[0-9]/g;
+            if (password1.value.match(num)) {
+                document.getElementById('number').classList.remove('inavlid');
+                document.getElementById('number').classList.add('valid');
+            } else {
+                document.getElementById('number').classList.remove('valid');
+                document.getElementById('number').classList.add('invalid');
+            }
+            var nospace = /[\s]/g;
+            if (password1.value.match(nospace)) {
+                document.getElementById('space').classList.remove('valid');
+                document.getElementById('space').classList.add('invalid');
+            } else {
+                document.getElementById('space').classList.remove('invalid');
+                document.getElementById('space').classList.add('valid');
+            }
+            letter = document.getElementById('letter').classList.contains('valid');
+            number = document.getElementById('number').classList.contains('valid');
+            space = document.getElementById('space').classList.contains('valid');
+            if (letter & number & space) {
+                console.log(letter, number, space);
+                document.querySelector('.password2').disabled = false;
+
+            } else {
+                document.querySelector('.password2').disabled = true;
+            }
+            if ((userid.value != "") & match & letter & space & number) {
+                document.querySelector('.signInBtn').disabled = false;
+            }
+
+        }
+        // for password2==========================================================
+        var password2 = document.querySelector('.password2');
+        password2.onfocus = function () {
+            document.getElementById("msg2").style.display = "block";
+        }
+        password2.onblur = function () {
+            document.getElementById("msg2").style.display = "none";
+        }
+        password2.onkeyup = function () {
+
+            if (password2.value === password1.value) {
+                document.getElementById('match').classList.remove('invalid');
+                document.getElementById('match').classList.add('valid');
+                document.getElementById('match').textContent = "matched";
+
+
+            } else {
+                document.getElementById('match').classList.remove('valid');
+                document.getElementById('match').classList.add('invalid');
+                document.getElementById('match').textContent = "not matched";
+                document.querySelector('.signInBtn').disabled = true;
+
+            }
+            match = document.getElementById("match").classList.contains("valid");
+            if ((userid.value != "") & match & letter & space & number) {
+                document.querySelector('.signInBtn').disabled = false;
+            }
+
+        }
+    </script>
+
+
+</body>
+
+</html>
